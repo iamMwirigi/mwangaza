@@ -1,0 +1,50 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Mwangaza Backend API
+            description: API for the Mwangaza System - User Roles & Permissions
+            version: 1.0.0
+        servers:
+            - url: https://iguru.co.ke/PLAYGROUND/mwangaza
+              description: Production Server
+        components:
+            securitySchemes:
+                bearerAuth:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - bearerAuth: []
+        paths:
+            /api/login_check:
+                post:
+                    tags:
+                        - Auth
+                    summary: Login to get JWT Token
+                    requestBody:
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    properties:
+                                        username:
+                                            type: string
+                                            example: admin@example.com
+                                        password:
+                                            type: string
+                                            example: password
+                    responses:
+                        '200':
+                            description: Success
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            token:
+                                                type: string
+                                            user:
+                                                $ref: '#/components/schemas/User-user.read'
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
