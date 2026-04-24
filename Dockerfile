@@ -49,8 +49,8 @@ RUN mkdir -p config/jwt && \
     openssl genrsa -out config/jwt/private.pem 2048 && \
     openssl rsa -in config/jwt/private.pem -outform PEM -pubout -out config/jwt/public.pem
 
-# 7.2. Remove any accidentally copied .env files to prevent parse errors during build
-RUN rm -f .env .env.local
+# 7.2. Remove accidentally copied .env files and create an empty one to satisfy dot-env parser
+RUN rm -f .env .env.local && touch .env
 
 # 8. Install dependencies
 # We set dummy environment variables so Symfony can warm up the cache during build
