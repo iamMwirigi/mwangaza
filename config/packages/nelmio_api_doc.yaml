@@ -45,6 +45,9 @@ nelmio_api_doc:
                                                 type: string
                                             user:
                                                 $ref: '#/components/schemas/User-user.read'
+    models:
+        names:
+            - { alias: User-user.read, type: App\Entity\User, groups: [ 'user:read' ] }
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
