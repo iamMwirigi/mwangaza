@@ -57,6 +57,7 @@ RUN rm -f .env .env.local && touch .env
 ENV APP_ENV=prod
 ENV APP_SECRET=fix_later_in_dokploy_env
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+ENV DEFAULT_URI="http://localhost"
 RUN composer install --no-dev --optimize-autoloader
 
 # 9. Set permissions
