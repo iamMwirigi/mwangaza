@@ -44,6 +44,11 @@ WORKDIR /var/www/html
 # 7. Copy project files
 COPY . .
 
+# 7.1. Create dummy JWT keys if missing (needed for cache warmup)
+RUN mkdir -p config/jwt && \
+    openssl genrsa -out config/jwt/private.pem 2048 && \
+    openssl rsa -in config/jwt/private.pem -outform PEM -pubout -out config/jwt/public.pem
+
 # 8. Install dependencies
 # We set dummy environment variables so Symfony can warm up the cache during build
 ENV APP_ENV=prod
