@@ -5,7 +5,7 @@ nelmio_api_doc:
             description: API for the Mwangaza System - User Roles & Permissions
             version: 1.0.0
         servers:
-            - url: http://mwangazaapi.igurukenya.app
+            - url: https://mwangazaapi.igurukenya.app
               description: Production Server (Dokploy)
         components:
             securitySchemes:
