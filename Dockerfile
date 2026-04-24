@@ -1,0 +1,45 @@
+FROM php:8.2-apache
+
+# 1. Install system dependencies
+RUN apt-get update && apt-get install -y \
+    acl \
+    file \
+    gettext \
+    git \
+    libxml2-dev \
+    libicu-dev \
+    libzip-dev \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Install PHP extensions
+RUN docker-php-ext-install \
+    intl \
+    pdo_mysql \
+    zip
+
+# 3. Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# 4. Set Apache document root to public/
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# 5. Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 6. Set working directory
+WORKDIR /var/www/html
+
+# 7. Copy project files
+COPY . .
+
+# 8. Install dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# 9. Set permissions
+RUN chown -R www-data:www-data var public
+
+# 10. Expose port 80
+EXPOSE 80
