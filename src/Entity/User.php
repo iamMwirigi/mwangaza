@@ -15,8 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[UniqueEntity(fields: ['nationalId'], message: 'There is already an account with this National ID')]
+#[UniqueEntity(fields: ['email'], message: 'This email is unavailable, please use another email')]
+#[UniqueEntity(fields: ['username'], message: 'This username is unavailable, please use another username')]
+#[UniqueEntity(fields: ['nationalId'], message: 'This National ID is unavailable, please use another National ID')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -30,6 +31,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email]
     #[Groups(['user:read', 'user:list', 'user:write'])]
     private ?string $email = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Groups(['user:read', 'user:list', 'user:write'])]
+    private ?string $username = null;
 
     #[ORM\Column]
     #[Groups(['user:read', 'user:list', 'user:write'])]
@@ -85,10 +91,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
         return $this;
     }
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
+
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     public function getRoles(): array

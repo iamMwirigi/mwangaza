@@ -30,6 +30,7 @@ class CreateUserCommand extends Command
     {
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the user')
+            ->addArgument('username', InputArgument::REQUIRED, 'The username of the user')
             ->addArgument('password', InputArgument::REQUIRED, 'The plain password')
             ->addArgument('fullname', InputArgument::REQUIRED, 'The full name of the user')
             ->addArgument('nationalId', InputArgument::REQUIRED, 'The National ID of the user')
@@ -41,6 +42,7 @@ class CreateUserCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
+        $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $fullname = $input->getArgument('fullname');
         $nationalId = $input->getArgument('nationalId');
@@ -60,6 +62,7 @@ class CreateUserCommand extends Command
 
         $user = new User();
         $user->setEmail($email);
+        $user->setUsername($username);
         $user->setFullName($fullname);
         $user->setNationalId($nationalId);
         $user->setDateOfBirth(new \DateTime('1990-01-01')); // Default dob
