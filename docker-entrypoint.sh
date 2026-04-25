@@ -5,8 +5,8 @@ set -e
 echo "Waiting for database hostname to resolve..."
 MAX_RETRIES=10
 COUNT=0
-until ping -c 1 mwangaza-mwangazadevdb-vgenc9 > /dev/null 2>&1 || [ $COUNT -eq $MAX_RETRIES ]; do
-  echo "Hostname mwangaza-mwangazadevdb-vgenc9 not yet resolvable. Retrying in 2s ($COUNT/$MAX_RETRIES)..."
+until ping -c 10.0.0.2   > /dev/null 2>&1 || [ $COUNT -eq $MAX_RETRIES ]; do
+  echo "Hostname 10.0.0.2 not yet resolvable. Retrying in 2s ($COUNT/$MAX_RETRIES)..."
   sleep 2
   COUNT=$((COUNT + 1))
 done
