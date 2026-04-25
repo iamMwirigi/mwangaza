@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libzip-dev \
     zip \
+    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install PHP extensions
