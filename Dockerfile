@@ -59,6 +59,10 @@ ENV APP_ENV=prod
 ENV APP_SECRET=fix_later_in_dokploy_env
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 ENV DEFAULT_URI="http://localhost"
+ENV CORS_ALLOW_ORIGIN="^https?://.*$"
+ENV JWT_PASSPHRASE=a8470b884f22a66c4717297a39fec5c3df1384d4d325fb53c580cdc988e6bbd6
+ENV JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+ENV JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
 
 # 8.1. Build environment variables (this bakes defaults from .env into .env.local.php)
 RUN composer install --no-dev --optimize-autoloader && \
