@@ -47,8 +47,8 @@ COPY . .
 
 # 7.1. Create dummy JWT keys if missing (needed for cache warmup)
 RUN mkdir -p config/jwt && \
-    openssl genrsa -out config/jwt/private.pem 2048 && \
-    openssl rsa -in config/jwt/private.pem -outform PEM -pubout -out config/jwt/public.pem
+    [ -f config/jwt/private.pem ] || openssl genrsa -out config/jwt/private.pem 2048 && \
+    [ -f config/jwt/public.pem ] || openssl rsa -in config/jwt/private.pem -outform PEM -pubout -out config/jwt/public.pem
 
 # 7.2. Ensure var directory exists and is writable
 RUN mkdir -p var && chown -R www-data:www-data var
