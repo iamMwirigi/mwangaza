@@ -63,5 +63,11 @@ RUN composer install --no-dev --optimize-autoloader
 # 9. Set permissions
 RUN chown -R www-data:www-data var public
 
+# 9.1. Setup entrypoint for migrations
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # 10. Expose port 80
 EXPOSE 80
+
+ENTRYPOINT ["docker-entrypoint.sh"]

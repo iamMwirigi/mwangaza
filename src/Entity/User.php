@@ -114,6 +114,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return UserRole[]
+     */
+    public function getEnumRoles(): array
+    {
+        $roles = $this->getRoles();
+        return array_map(fn($role) => UserRole::from($role), $roles);
+    }
+
+    /**
+     * @param UserRole[] $roles
+     */
+    public function setEnumRoles(array $roles): static
+    {
+        $this->roles = array_map(fn(UserRole $role) => $role->value, $roles);
+        return $this;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
