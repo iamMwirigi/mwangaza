@@ -65,8 +65,8 @@ ENV JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
 ENV JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
 
 # 8.1. Build environment variables (this bakes defaults from .env into .env.local.php)
-RUN composer install --no-dev --optimize-autoloader && \
-    echo "APP_ENV=prod" > .env && \
+RUN echo "APP_ENV=prod" > .env && \
+    composer install --no-dev --optimize-autoloader && \
     composer dump-env prod && \
     rm -f .env .env.local .env.dev .env.test
 
