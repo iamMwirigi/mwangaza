@@ -50,8 +50,8 @@ RUN mkdir -p config/jwt && \
     openssl genrsa -out config/jwt/private.pem 2048 && \
     openssl rsa -in config/jwt/private.pem -outform PEM -pubout -out config/jwt/public.pem
 
-# 7.2. Remove accidentally copied .env files and create an empty one to satisfy dot-env parser
-RUN rm -f .env .env.local && touch .env
+# 7.2. Ensure var directory exists and is writable
+RUN mkdir -p var && chown -R www-data:www-data var
 
 # 8. Install dependencies
 # We set dummy environment variables so Symfony can warm up the cache during build
@@ -59,7 +59,11 @@ ENV APP_ENV=prod
 ENV APP_SECRET=fix_later_in_dokploy_env
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 ENV DEFAULT_URI="http://localhost"
-RUN composer install --no-dev --optimize-autoloader
+
+# 8.1. Build environment variables (this bakes defaults from .env into .env.local.php)
+RUN composer install --no-dev --optimize-autoloader && \
+    composer dump-env prod && \
+    rm -f .env .env.local .env.dev .env.test
 
 # 9. Set permissions
 RUN chown -R www-data:www-data var public
